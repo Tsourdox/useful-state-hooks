@@ -1,4 +1,3 @@
-import "./App.css";
 import { useListState } from "./useListState";
 
 interface User {
@@ -26,7 +25,7 @@ function App() {
   const resetUsers = () => setUsers.set([{ id: "0", name: "Manooni", becameMember: new Date() }]);
 
   return (
-    <div className="App">
+    <div style={{ maxWidth: "500px" }}>
       <h1>useListState</h1>
       <h2>Primitives (message)</h2>
       <ul style={{ listStyleType: "none", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
