@@ -1,22 +1,37 @@
-import { useCallback, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useRef, useState } from "react";
+
+type PrimitiveSetFunctions<T> = {
+  set: Dispatch<SetStateAction<T[]>>;
+  add: (item: T) => void;
+  remove: (item: T) => void;
+};
+type ObjectSetFunctions<T> = {
+  set: Dispatch<SetStateAction<T[]>>;
+  add: (item: T) => void;
+  update: (item: T) => void;
+  remove: (item: T) => void;
+};
 
 /**
- * Custom hook that handle list states and exposes set functions which won't mutate the array.
- * @param defaultState intial list of values
- * @param compareProperty used to compare if objects are the
- * @returns
+ * Custom hook that handle list states and exposes set functions which
+ * can be used to update the state without mutating it.
+ * @param defaultState initial list of values.
+ * @param compareKey key used to compare if two objects are the same.
+ * @returns a tuple with the list state and an object containing all set functions.
  */
-export function useListState<S>(
-  defaultState: S[],
-  ...compareProperty: S extends object ? [v: keyof S] : [v?: never]
-): S extends object
-  ? [S[], { add: (item: S) => void; update: (item: S) => void; remove: (item: S) => void }]
-  : [S[], { add: (item: S) => void; remove: (item: S) => void }] {
-  const comparePropetyRef = useRef(compareProperty);
-  const [state, setState] = useState(defaultState);
+export function useListState<T>(
+  defaultState?: T[],
+  ...compareKey: T extends object ? [v: keyof T] : [v?: never]
+): T extends object ? [T[], ObjectSetFunctions<T>] : [T[], PrimitiveSetFunctions<T>];
+export function useListState<T>(
+  defaultState?: T[],
+  ...compareKey: T extends object ? [v: keyof T] : [v?: never]
+): [T[], ObjectSetFunctions<T>] | [T[], PrimitiveSetFunctions<T>] {
+  const comparePropetyRef = useRef(compareKey);
+  const [state, set] = useState(defaultState || []);
 
-  const add = useCallback((item: S) => {
-    setState((prevState) => {
+  const add = useCallback((item: T) => {
+    set((prevState) => {
       const key = comparePropetyRef.current[0];
       if (typeof item === "object" && key) {
         const exists = prevState.some((i) => i[key] === item[key]);
@@ -26,8 +41,8 @@ export function useListState<S>(
     });
   }, []);
 
-  const update = useCallback((item: S) => {
-    setState((prevState) => {
+  const update = useCallback((item: T) => {
+    set((prevState) => {
       const copyState = [...prevState];
       let index: number;
       const key = comparePropetyRef.current[0];
@@ -43,9 +58,9 @@ export function useListState<S>(
     });
   }, []);
 
-  const remove = useCallback((item: S) => {
+  const remove = useCallback((item: T) => {
     const key = comparePropetyRef.current[0];
-    setState((prevState) => {
+    set((prevState) => {
       return prevState.filter((i) => {
         if (typeof item === "object" && key) {
           return i[key] !== item[key];
@@ -55,9 +70,5 @@ export function useListState<S>(
     });
   }, []);
 
-  if (typeof state === "object") {
-    return [state, { add, update, remove }] as any;
-  }
-
-  return [state, { add, remove }] as any;
+  return [state, { set, add, update, remove }];
 }
