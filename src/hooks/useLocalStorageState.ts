@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 // Convenience type
+type InitialState<S> = S | (() => S);
 type ReturnTuple<S> = [S, Dispatch<SetStateAction<S>>];
 
 /**
@@ -10,11 +11,11 @@ type ReturnTuple<S> = [S, Dispatch<SetStateAction<S>>];
  * @returns a tuple containing the state and a setState function.
  */
 // Overload signatures
-export function useLocalStorageState<S>(key: string, initialState: S | (() => S)): ReturnTuple<S>;
+export function useLocalStorageState<S>(key: string, initialState: InitialState<S>): ReturnTuple<S>;
 export function useLocalStorageState<S = undefined>(key: string): ReturnTuple<S | undefined>;
 
 // Implementation
-export function useLocalStorageState<S>(key: string, initialState?: S | (() => S)): ReturnTuple<S | undefined> {
+export function useLocalStorageState<S>(key: string, initialState?: InitialState<S>): ReturnTuple<S | undefined> {
   const [state, setState] = useState(() => {
     const storedState = localStorage.getItem(key);
     if (storedState) {
