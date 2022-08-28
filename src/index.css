@@ -72,3 +72,21 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.app {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  padding: 5rem 1rem 10rem 1rem;
+}
+
+ul {
+  list-style-type: none;
+}
+
+ul.horizontal {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
