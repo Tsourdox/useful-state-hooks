@@ -1,4 +1,4 @@
-import { useListState } from "../hooks/useListState";
+import useListState from "../hooks/useListState";
 
 interface User {
   id: string;
@@ -12,11 +12,11 @@ const defaultUsers: User[] = [
 ];
 
 function UseListStateDemo() {
-  const [messages, setMessages] = useListState<string>();
+  const [messages, setMessages] = useListState<string>(["Lorem"]);
   const [users, setUsers] = useListState<User>(defaultUsers, "id");
 
-  const addMessage = () => setMessages.add("test");
-  const removeMessage = () => setMessages.remove("test");
+  const addMessage = () => setMessages.add("Ipsum");
+  const removeMessage = () => setMessages.remove("Ipsum");
   const resetMessages = () => setMessages.set(["Hello", "Developer", "World"]);
 
   const addUser = () => setUsers.add({ id: "3", name: "My", becameMember: new Date() });
@@ -29,7 +29,7 @@ function UseListStateDemo() {
       <h1>useListState</h1>
       <h2>Primitives (message)</h2>
       <ul className="horizontal">
-        {messages.map((m, i) => (
+        {messages?.map((m, i) => (
           <li key={i}>{m}</li>
         ))}
       </ul>
@@ -39,7 +39,7 @@ function UseListStateDemo() {
 
       <h2>Objects (user)</h2>
       <ul>
-        {users.map((u) => (
+        {users?.map((u) => (
           <li key={u.id}>
             {u.id} {u.name} {u.becameMember.toTimeString()}
           </li>

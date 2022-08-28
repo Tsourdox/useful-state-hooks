@@ -17,6 +17,7 @@ type ObjectSetFunctions<S> = {
   update: (item: S) => void;
   remove: (item: S) => void;
 };
+type SelectSetFunctions<S> = S extends object ? ObjectSetFunctions<S> : PrimitiveSetFunctions<S>;
 
 /**
  * An extended version of the setState hook for lists that export additional some set functions.
@@ -24,14 +25,14 @@ type ObjectSetFunctions<S> = {
  * @param initialState can be used to set a default state.
  * @param key when objects are stored in the list state a key is needed to compare them.
  *
- * DEV_NOTE: When extending Primitive instead of Primitive[], passed initialState is infered as a union type,
- * for example (1 | 2)[] instead of number[] - how can extending Primitive[] be allowed here?
+ * DEV_NOTE: Passing a primitive list as initialState without adding a generics argument causes it to
+ * be infered as a union type, for example (1 | 2)[] instead of number[] - how can this be fixed?
  */
 // Overload signatures
 function useListState<S extends object>(initialState: InitialState<S[]>, key: Key<S>): [S[], ObjectSetFunctions<S>];
-function useListState<S extends Primitive[]>(initialState: InitialState<S>): [S, PrimitiveSetFunctions<S>];
+function useListState<S extends Primitive>(initialState: InitialState<S[]>): [S[], PrimitiveSetFunctions<S>];
 function useListState<S extends Date>(initialState: InitialState<S[]>): [S[], PrimitiveSetFunctions<S>];
-function useListState<S = undefined>(): [S[], PrimitiveSetFunctions<S>];
+function useListState<S = undefined>(): [S[] | undefined, SelectSetFunctions<S>];
 
 // Implementation
 function useListState<S>(
