@@ -19,7 +19,13 @@ export function useLocalStorageState<S>(key: string, initialState?: InitialState
   const [state, setState] = useState(() => {
     const storedState = localStorage.getItem(key);
     if (storedState) {
-      return JSON.parse(storedState) as S;
+      const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+      return JSON.parse(storedState, (key, value) => {
+        if (typeof value === "string" && dateFormat.test(value)) {
+          return new Date(value);
+        }
+        return value;
+      }) as S;
     }
     if (typeof initialState === "function") {
       return (initialState as () => S)();
@@ -31,7 +37,8 @@ export function useLocalStorageState<S>(key: string, initialState?: InitialState
     if (state === undefined) {
       localStorage.removeItem(key);
     } else {
-      localStorage.setItem(key, JSON.stringify(state));
+      const stringState = typeof state === "string" ? state : JSON.stringify(state);
+      localStorage.setItem(key, stringState);
     }
   }, [state]);
 
