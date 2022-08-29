@@ -20,7 +20,7 @@ export function useLocalStorageState<S>(key: string, initialState?: InitialState
     const storedState = localStorage.getItem(key);
     if (storedState) {
       const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
-      return JSON.parse(storedState, (key, value) => {
+      return JSON.parse(storedState, (_, value) => {
         if (typeof value === "string" && dateFormat.test(value)) {
           return new Date(value);
         }
