@@ -8,12 +8,12 @@ type Key<S> = S extends Date ? undefined : keyof S;
 // Set functions
 type PrimitiveSetFunctions<S> = {
   set: Dispatch<SetStateAction<S[] | undefined>>;
-  add: (item: S) => void;
+  add: (...items: S[]) => void;
   remove: (item: S) => void;
 };
 type ObjectSetFunctions<S> = {
   set: Dispatch<SetStateAction<S[] | undefined>>;
-  add: (item: S) => void;
+  add: (...items: S[]) => void;
   update: (item: S) => void;
   remove: (item: S) => void;
 };
@@ -42,11 +42,12 @@ function useListState<S>(
   const [state, set] = useState(initialState);
 
   const add = useCallback(
-    (item: S) => {
+    (...items: S[]) => {
       set((prevState = []) => {
-        const exists = prevState?.some((stateItem) => isEqual(stateItem, item, key));
-        if (exists) return prevState;
-        return [...prevState, item];
+        const removedDuplicates = items.filter(
+          (item) => !prevState?.some((stateItem) => isEqual(stateItem, item, key))
+        );
+        return [...prevState, ...removedDuplicates];
       });
     },
     [key]
@@ -78,7 +79,12 @@ function useListState<S>(
 
 /** Determines if two list items are the same */
 function isEqual<S>(item1: S, item2: S, key?: keyof S): boolean {
-  if (key) return item1[key] === item2[key];
+  if (key) {
+    return item1[key] === item2[key];
+  }
+  if (item1 instanceof Date && item2 instanceof Date) {
+    return item1.getTime() === item2.getTime();
+  }
   return item1 === item2;
 }
 
