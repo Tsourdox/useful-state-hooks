@@ -10,12 +10,14 @@ type PrimitiveSetFunctions<S> = {
   set: Dispatch<SetStateAction<S[] | undefined>>;
   add: (...items: S[]) => void;
   remove: (item: S) => void;
+  sort: (direction?: "asc" | "desc") => void;
 };
 type ObjectSetFunctions<S> = {
   set: Dispatch<SetStateAction<S[] | undefined>>;
   add: (...items: S[]) => void;
   update: (item: S) => void;
   remove: (item: S) => void;
+  sort: (direction: "asc" | "desc", by: keyof S) => void;
 };
 type SelectSetFunctions<S> = S extends object ? ObjectSetFunctions<S> : PrimitiveSetFunctions<S>;
 
@@ -74,7 +76,25 @@ function useListState<S>(
     [key]
   );
 
-  return [state, { set, add, update, remove }];
+  const sort = useCallback(
+    (direction: "asc" | "desc" = "asc", key?: keyof S | undefined) => {
+      set((prevState = []) => {
+        const copyState = [...prevState];
+        copyState.sort((a, b) => {
+          const aa = key ? a[key] : a;
+          const bb = key ? b[key] : b;
+          if (direction === "asc") {
+            return aa > bb ? 1 : -1;
+          }
+          return aa < bb ? 1 : -1;
+        });
+        return copyState;
+      });
+    },
+    [key]
+  );
+
+  return [state, { set, add, update, remove, sort }];
 }
 
 /** Determines if two list items are the same */
