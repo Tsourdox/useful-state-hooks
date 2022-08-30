@@ -47,6 +47,14 @@ describe("updating primitive states", () => {
     const [message] = result.current;
     expect(message).toStrictEqual([1, 2, 3, 4]);
   });
+  it("should not add primitives to the list state if it they already exist", () => {
+    const { result } = renderHook(() => useListState<number>([1, 2, 3]));
+    const [_, setMessage] = result.current;
+    act(() => setMessage.add(1));
+
+    const [message] = result.current;
+    expect(message).toStrictEqual([1, 2, 3]);
+  });
   it("should be able to add primitives to the list state using the spread operator", () => {
     const { result } = renderHook(() => useListState<number>([1, 2, 3]));
     const [_, setMessage] = result.current;
@@ -89,6 +97,14 @@ describe("updating object states", () => {
 
     const [message] = result.current;
     expect(message).toStrictEqual([{ id: "123" }, { id: "456" }]);
+  });
+  it("should not add objects to the list state if they already exists", () => {
+    const { result } = renderHook(() => useListState<User>([{ id: "123" }], "id"));
+    const [_, setMessage] = result.current;
+    act(() => setMessage.add({ id: "123" }));
+
+    const [message] = result.current;
+    expect(message).toStrictEqual([{ id: "123" }]);
   });
   it("should be able to add objects to the list state using the spread operator", () => {
     const { result } = renderHook(() => useListState<User>([{ id: "123" }], "id"));
@@ -155,6 +171,17 @@ describe("updating date states", () => {
 
     const [dates] = result.current;
     expect(dates).toStrictEqual([...initialState, nextDate]);
+  });
+  it("should not add dates to the list state if they already exist", () => {
+    const initialState = [new Date("2022-09-01")];
+    const { result } = renderHook(() => useListState(initialState));
+    const [_, setDates] = result.current;
+
+    const nextDate = new Date("2022-09-01");
+    act(() => setDates.add(nextDate));
+
+    const [dates] = result.current;
+    expect(dates).toStrictEqual(initialState);
   });
   it("should be able to add dates to the list state using the spread operator", () => {
     const initialState = [new Date("2022-08-01")];
