@@ -49,7 +49,7 @@ describe("updating primitive states", () => {
     const [numbers] = result.current;
     expect(numbers).toStrictEqual([1, 2, 3, 4]);
   });
-  it("should not add primitives to the list state if it they already exist", () => {
+  it("should not add primitives to the list state if they already exist", () => {
     const { result } = renderHook(() => useListState<number>([1, 2, 3]));
     const [_, setNumbers] = result.current;
     act(() => setNumbers.add(1));

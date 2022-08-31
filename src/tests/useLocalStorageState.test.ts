@@ -4,23 +4,23 @@ import { useLocalStorageState } from "../hooks/useLocalStorageState";
 
 beforeEach(() => localStorage.clear());
 
-describe("handle initial state", () => {
-  it("should return undefined when used without an initial state", () => {
+describe("initial state", () => {
+  it("should set state to undefined when used without an initial state", () => {
     const { result } = renderHook(() => useLocalStorageState<string>("undefined"));
     const [state] = result.current;
     expect(state).toBe(undefined);
   });
-  it("should return the same primitive as was passed in as initial state", () => {
+  it("should set state to the same primitive as was passed in as initial state", () => {
     const { result } = renderHook(() => useLocalStorageState("primitive", "Initial string"));
     const [state] = result.current;
     expect(state).toBe("Initial string");
   });
-  it("should return the same object as was passed in as initial state", () => {
+  it("should set state to the same object as was passed in as initial state", () => {
     const { result } = renderHook(() => useLocalStorageState("object", { a: "hello" }));
     const [state] = result.current;
     expect(state).toStrictEqual({ a: "hello" });
   });
-  it("should return the same array as was passed in as initial state", () => {
+  it("should set state to the same array as was passed in as initial state", () => {
     const { result } = renderHook(() => useLocalStorageState("array", [1, 2, 3]));
     const [state] = result.current;
     expect(state).toStrictEqual([1, 2, 3]);
@@ -36,7 +36,7 @@ describe("syncing with local storage", () => {
     expect(localStorage.getItem("no args")).toBe(null);
     expect(localStorage.getItem("undefined")).toBe(null);
   });
-  it("should save data to local storage under the given key when an actual value is passed in as initial state", () => {
+  it("should save data to local storage under the given key when a value is passed in as initial state", () => {
     const setSpy = vi.spyOn(localStorage, "setItem");
     renderHook(() => useLocalStorageState("message", "Hello world"));
     expect(setSpy).toHaveBeenCalledWith("message", "Hello world");
