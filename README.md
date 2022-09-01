@@ -44,7 +44,7 @@ Apart from the normal `set` function, there are four more functions that can be 
 
 - They will change the state without introducing duplicates.
 
-When **working with objects** a second argument must be passed in to the hook, which defines a key. The hook then uses that key to check equality of objects.
+When **working with objects** a second argument must be passed in to the hook, defining a key. The hook can then use that key to check equality of objects.
 
 ```
 const [users, setUsers] = useListState([
