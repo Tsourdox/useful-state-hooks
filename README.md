@@ -1,6 +1,6 @@
 # Useful state hooks
 
-A few react hooks that are written in Typescript. They handle the same type of states as the normal useState hook but with a few every day coding improvements.
+A few React hooks that are written in Typescript. They handle the same type of states as the normal useState hook but with a few every day coding improvements.
 
 ## Installation
 
@@ -30,7 +30,7 @@ It takes two arguments. First argument is the localstorage key, while the second
 
 ### UseListState
 
-Was created to ease the headakes of mutations when working with arrays. Instead of returning a set function as the second tuple value, it returns an object with multiple set functions which can be used to updates the state without mutating it.
+Was created to ease the headaches of mutations when working with arrays. Instead of returning a set function as the second tuple value, it returns an object with multiple set functions which can be used to update the state without mutating it.
 
 Use hook like this:
 
@@ -71,7 +71,7 @@ setMessages.remove(['Lorem']);
 
 #### **Set**
 
-This is just the normal react set function re-exposed (can introduce duplicates).
+This is just the normal React set function re-exposed (which can introduce duplicates).
 
 ```
 setMessages.set(['New list']);
@@ -93,7 +93,7 @@ It's also possible to sort an array of objects. When doing so a second argument 
 setUsers.sort('desc', 'name');
 ```
 
-#### **Update (objects only)**
+#### **Update (for objects only)**
 
 Uses the key that was passed in when calling the hook to update the correct object in the array.
 
