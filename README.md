@@ -1,6 +1,6 @@
 # Useful state hooks
 
-A few React hooks that are written in Typescript. They handle the same type of states as the normal useState hook but with a few every day coding improvements.
+React hooks that are written in Typescript. They handle the same type of states as the normal useState hook but with a few every day coding improvements.
 
 ## Installation
 
@@ -30,7 +30,7 @@ It takes two arguments. First argument is the localstorage key, while the second
 
 ### UseListState
 
-Was created to ease the headaches of mutations when working with arrays. Instead of returning a set function as the second tuple value, it returns an object with multiple set functions which can be used to update the state without mutating it.
+Was created to ease the headaches caused by mutations when working with arrays. Instead of returning a set function as the second tuple value, it returns an object with multiple set functions which can be used to update the state without mutating it.
 
 Use hook like this:
 
@@ -93,13 +93,19 @@ It's also possible to sort an array of objects. When doing so a second argument 
 setUsers.sort('desc', 'name');
 ```
 
-#### **Update (for objects only)**
+#### **Update (objects only)**
 
 Uses the key that was passed in when calling the hook to update the correct object in the array.
 
 ```
-const [users, setUsers] = useListState([{ id: 1, name: 'Olivia' }], 'id');
+const [users, setUsers] = useListState([{ id: 1, name: 'My' }], 'id');
 
-setUsers.update({ id: 1, name: 'My' });
-// [{ id: 1, name: 'My' }]
+setUsers.update({ id: 1, name: 'Olivia' });
+// [{ id: 1, name: 'Olivia' }]
 ```
+
+## Support
+
+If you find and bugs please report an issue so it can be fixed. Do you have any suggestions that would improve the hooks please let me now. Feel free to contribute in any way!
+
+**I hope this can be useful for you in some way, enjoy =)**
