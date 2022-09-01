@@ -5,7 +5,7 @@ Both hooks are written in Typescript and should handle the same type of states a
 ## Installation (not published yet)
 
 ```
-npm install useful-hooks
+npm install useful-state-hooks
 ```
 
 ---

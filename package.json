@@ -1,8 +1,32 @@
 {
-  "name": "untitled-folder",
+  "name": "useful-state-hooks",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Two useful state hooks for handling list mutations and syncing with local storage.",
+  "main": "src/hooks/index.ts",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tsourdox/useful-state-hooks.git"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "react hooks",
+    "local",
+    "storage",
+    "list",
+    "mutate",
+    "mutation",
+    "helpers",
+    "useful"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tsourdox/useful-state-hooks/issues"
+  },
+  "homepage": "https://github.com/Tsourdox/useful-state-hooks",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
