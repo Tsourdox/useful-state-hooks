@@ -50,7 +50,7 @@ When **working with objects** a second argument must be passed to the hook. It d
 
 #### **Add**
 
-Appends to the end of the list. Supports the spread operator aswell.
+Appends to the end of the list without introducing duplicates. Supports the spread operator as well.
 
 ```
 setMessages.add(['Foo']);
