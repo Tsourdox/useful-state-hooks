@@ -30,6 +30,11 @@ describe("initial state", () => {
     const expectedState = initialState;
     expect(state).toStrictEqual(expectedState);
   });
+  it("should set state to the correct value when a callback function is passed in as initial state", () => {
+    const { result } = renderHook(() => useListState(() => [new Date("2022-08-01")]));
+    const [state] = result.current;
+    expect(state).toStrictEqual([new Date("2022-08-01")]);
+  });
 });
 
 describe("updating primitive states", () => {

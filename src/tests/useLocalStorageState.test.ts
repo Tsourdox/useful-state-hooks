@@ -25,6 +25,11 @@ describe("initial state", () => {
     const [state] = result.current;
     expect(state).toStrictEqual([1, 2, 3]);
   });
+  it("should set state to the correct value when a callback function is passed in as initial state", () => {
+    const { result } = renderHook(() => useLocalStorageState("array", () => [1, 2, 3]));
+    const [state] = result.current;
+    expect(state).toStrictEqual([1, 2, 3]);
+  });
 });
 
 describe("syncing with local storage", () => {
