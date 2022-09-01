@@ -95,7 +95,7 @@ setUsers.sort('desc', 'name');
 
 #### **Update (objects only)**
 
-The update function is only available for array of objects.
+Uses the key that was passed in when calling the hook to update the correct object in the array.
 
 ```
 const [users, setUsers] = useListState([{ id: 1, name: 'Olivia' }], 'id');
