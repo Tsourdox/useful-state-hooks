@@ -1,7 +1,7 @@
 {
   "name": "useful-state-hooks",
   "private": false,
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Useful state hooks - handling list states & syncing state with local storage.",
   "main": "src/hooks/index.ts",
   "types": "src/hooks/index.ts",
