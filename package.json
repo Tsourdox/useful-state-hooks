@@ -1,6 +1,6 @@
 {
   "name": "useful-state-hooks",
-  "private": true,
+  "private": false,
   "version": "1.0.0",
   "description": "Two useful state hooks for handling list mutations and syncing with local storage.",
   "main": "src/hooks/index.ts",
@@ -11,17 +11,23 @@
   },
   "keywords": [
     "react",
+    "hook",
     "hooks",
     "react hooks",
+    "state",
+    "state hook",
     "local",
     "storage",
+    "localstorage",
     "list",
+    "array",
     "mutate",
     "mutation",
-    "helpers",
+    "help",
+    "helper",
     "useful"
   ],
-  "author": "",
+  "author": "David Jensen <tsourdox@icloud.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Tsourdox/useful-state-hooks/issues"
