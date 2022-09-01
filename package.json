@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Two useful state hooks for handling list mutations and syncing with local storage.",
   "main": "src/hooks/index.ts",
+  "types": "src/hooks/index.ts",
   "type": "module",
   "repository": {
     "type": "git",
