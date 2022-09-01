@@ -1,16 +1,5 @@
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 
-interface User {
-  id: string;
-  name: string;
-  becameMember: Date;
-}
-
-const defaultUsers: User[] = [
-  { id: "1", name: "David", becameMember: new Date() },
-  { id: "2", name: "Olivia", becameMember: new Date() },
-];
-
 function UseLocalStorageStateDemo() {
   const [name, setName] = useLocalStorageState<string>("name");
   const [isDarkMode, setIsDarkMode] = useLocalStorageState("name", true);
