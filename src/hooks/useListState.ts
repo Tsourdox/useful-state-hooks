@@ -31,13 +31,20 @@ type SelectSetFunctions<S> = S extends object ? ObjectSetFunctions<S> : Primitiv
  * be infered as a union type, for example (1 | 2)[] instead of number[] - how can this be fixed?
  */
 // Overload signatures
-function useListState<S extends object>(initialState: InitialState<S[]>, key: Key<S>): [S[], ObjectSetFunctions<S>];
-function useListState<S extends Primitive>(initialState: InitialState<S[]>): [S[], PrimitiveSetFunctions<S>];
-function useListState<S extends Date>(initialState: InitialState<S[]>): [S[], PrimitiveSetFunctions<S>];
-function useListState<S = undefined>(): [S[] | undefined, SelectSetFunctions<S>];
+export function useListState<S extends object>(
+  initialState: InitialState<S[]>,
+  key: Key<S>
+): [S[], ObjectSetFunctions<S>];
+export function useListState<S extends Primitive>(
+  initialState: InitialState<S[]>
+): [S[], PrimitiveSetFunctions<S>];
+export function useListState<S extends Date>(
+  initialState: InitialState<S[]>
+): [S[], PrimitiveSetFunctions<S>];
+export function useListState<S = undefined>(): [S[] | undefined, SelectSetFunctions<S>];
 
 // Implementation
-function useListState<S>(
+export function useListState<S>(
   initialState?: InitialState<S[]>,
   key?: keyof S | undefined
 ): [S[] | undefined, ObjectSetFunctions<S> | PrimitiveSetFunctions<S>] {
@@ -107,5 +114,3 @@ function isEqual<S>(item1: S, item2: S, key?: keyof S): boolean {
   }
   return item1 === item2;
 }
-
-export default useListState;

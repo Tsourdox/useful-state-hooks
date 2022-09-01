@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import useListState from "../hooks/useListState";
+import { useListState } from "../hooks/useListState";
 
 interface User {
   id: string;
@@ -151,7 +151,9 @@ describe("updating object states", () => {
     expect(users).toStrictEqual(initialState);
   });
   it("should be able to remove an object from the list state", () => {
-    const { result } = renderHook(() => useListState<User>([{ id: "123" }, { id: "456" }, { id: "789" }], "id"));
+    const { result } = renderHook(() =>
+      useListState<User>([{ id: "123" }, { id: "456" }, { id: "789" }], "id")
+    );
     const [_, setUsers] = result.current;
     act(() => setUsers.remove({ id: "456" }));
 
@@ -159,7 +161,9 @@ describe("updating object states", () => {
     expect(users).toStrictEqual([{ id: "123" }, { id: "789" }]);
   });
   it("should not change the state when trying to remove an object that does not exist", () => {
-    const { result } = renderHook(() => useListState<User>([{ id: "123" }, { id: "456" }, { id: "789" }], "id"));
+    const { result } = renderHook(() =>
+      useListState<User>([{ id: "123" }, { id: "456" }, { id: "789" }], "id")
+    );
     const [_, setUsers] = result.current;
     act(() => setUsers.remove({ id: "000" }));
 
