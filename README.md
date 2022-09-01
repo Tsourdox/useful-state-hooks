@@ -35,7 +35,7 @@ Was created to ease the headaches caused by mutations when working with arrays. 
 Use hook like this:
 
 ```
-const [messages, setMessages] = useListState(['Lorem', 'Ipsum']);
+const [words, setWords] = useListState(['Lorem', 'Ipsum']);
 ```
 
 Apart from the normal `set` function, there are four more functions that can be used to set the state.
@@ -44,19 +44,24 @@ Apart from the normal `set` function, there are four more functions that can be 
 
 - They will change the state without introducing duplicates.
 
-When **working with objects** a second argument must be passed to the hook. It defines a key which is used to check equality of two objects.
+When **working with objects** a second argument must be passed in to the hook, which defines a key. The hook then uses that key to check equality of objects.
 
----
+```
+const [users, setUsers] = useListState([
+  { id: 1, name: "My" }
+  { id: 2, name: "Olivia" }
+], 'id');
+```
 
 #### **Add**
 
 Appends to the end of the list without introducing duplicates. Supports the spread operator as well.
 
 ```
-setMessages.add(['Foo']);
+setWords.add(['Foo']);
 // ['Lorem', 'Ipsum', 'Foo']
 
-setMessages.add(...['Foo', 'Bas', 'Ipsum']);
+setWords.add(...['Foo', 'Bas', 'Ipsum']);
 // ['Lorem', 'Ipsum', 'Foo', 'Bas']
 ```
 
@@ -65,7 +70,7 @@ setMessages.add(...['Foo', 'Bas', 'Ipsum']);
 Removes all matching item from the list.
 
 ```
-setMessages.remove(['Lorem']);
+setWords.remove(['Lorem']);
 // ['Ipsum']
 ```
 
@@ -74,7 +79,7 @@ setMessages.remove(['Lorem']);
 This is just the normal React set function re-exposed (which can introduce duplicates).
 
 ```
-setMessages.set(['New list']);
+setWords.set(['New list']);
 // ['New List']
 ```
 
@@ -83,7 +88,7 @@ setMessages.set(['New list']);
 Sorts an array ascending or descending.
 
 ```
-setMessages.sort('asc');
+setWords.sort('asc');
 // ['Ipsum', 'Lorem']
 ```
 
@@ -98,7 +103,9 @@ setUsers.sort('desc', 'name');
 Uses the key that was passed in when calling the hook to update the correct object in the array.
 
 ```
-const [users, setUsers] = useListState([{ id: 1, name: 'My' }], 'id');
+const [users, setUsers] = useListState([
+  { id: 1, name: 'My' }
+], 'id');
 
 setUsers.update({ id: 1, name: 'Olivia' });
 // [{ id: 1, name: 'Olivia' }]
