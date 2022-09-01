@@ -2,7 +2,7 @@
 
 Both hooks are written in Typescript and should handle the same type of states as the normal useState hook.
 
-## Installation
+## Installation (not published yet)
 
 ```
 npm install useful-hooks
