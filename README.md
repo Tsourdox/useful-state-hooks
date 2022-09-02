@@ -10,10 +10,10 @@ npm install useful-state-hooks
 
 ## Hooks
 
-- [useLocalStorageState ](#use-local-storage-state)
-- [useListState](#use-list-state)
+- [useLocalStorageState](#hook1)
+- [useListState](#hook2)
 
-### UseLocalStorageState
+### <a name="hook1"></a>UseLocalStorageState
 
 Syncs the state with localstorage. It has almost the same signature as the normal useState hook accepting primitives, dates, arrays and objects as initial state.
 
@@ -28,7 +28,7 @@ It takes two arguments. First argument is the localstorage key, while the second
 
 ---
 
-### UseListState
+### <a name="hook2"></a>UseListState
 
 Was created to ease the headaches caused by mutations when working with arrays. Instead of returning a set function as the second tuple value, it returns an object with multiple set functions which can be used to update the state without mutating it.
 
