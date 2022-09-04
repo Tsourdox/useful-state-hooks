@@ -11,7 +11,7 @@ describe("initial state", () => {
   it("should set state to undeinfed when used without an initial state", () => {
     const { result } = renderHook(() => useListState<string>());
     const [state] = result.current;
-    expect(state).toBe(undefined);
+    expect(state).toBeUndefined();
   });
   it("should set state to the same primitive list that was passed in as initial state", () => {
     const { result } = renderHook(() => useListState([1, 2, 3]));

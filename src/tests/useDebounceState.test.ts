@@ -12,7 +12,7 @@ describe("initial state", () => {
   it("should set state to undefined when used without an initial state", () => {
     const { result } = renderHook(() => useDebounceState<string>(() => {}));
     const [state] = result.current;
-    expect(state).toBe("Initial string");
+    expect(state).toBeUndefined();
   });
   it("should set state to the same primitive as was passed in as initial state", () => {
     const { result } = renderHook(() => useDebounceState(() => {}, "Initial string"));
