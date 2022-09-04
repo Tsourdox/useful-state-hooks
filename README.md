@@ -1,6 +1,6 @@
 # Useful state hooks
 
-React hooks that are written in Typescript. They handle the same type of states as the normal useState hook but with a few every day coding improvements.
+Useful React hooks written in Typescript. They handle the same type of states as the normal useState hook but with a few every day coding improvements.
 
 ## Installation
 
@@ -10,10 +10,11 @@ npm install useful-state-hooks
 
 ## Hooks
 
-- [useLocalStorageState](#hook1)
-- [useListState](#hook2)
+- [useLocalStorageState](#use-local-storage-state) - sync your state with local storage.
+- [useListState](#use-list-state) - work with lists without worrying about mutations.
+- [useDebounceState](#use-debounce-state) - delay execution of state related actions.
 
-### <a name="hook1"></a>UseLocalStorageState
+### <a name="use-local-storage-state"></a>UseLocalStorageState
 
 Syncs the state with localstorage. It has almost the same signature as the normal useState hook accepting primitives, dates, arrays and objects as initial state.
 
@@ -26,9 +27,7 @@ It takes two arguments. First argument is the localstorage key, while the second
 - Data stored in localstorage will be prioritized over initial state.
 - Date objects are revived (recreated from strings) when loaded from localstorage.
 
----
-
-### <a name="hook2"></a>UseListState
+### <a name="use-list-state"></a>UseListState
 
 Was created to ease the headaches caused by mutations when working with arrays. Instead of returning a set function as the second tuple value, it returns an object with multiple set functions which can be used to update the state without mutating it.
 
@@ -109,6 +108,33 @@ const [users, setUsers] = useListState([
 
 setUsers.update({ id: 1, name: 'Olivia' });
 // [{ id: 1, name: 'Olivia' }]
+```
+
+### <a name="use-debounce-state"></a>UseDebounceState
+
+This hook is useful when you want to update a state often but not trigger related actions at same rate. Multiple state updates in a row within the delay window will only result in the callback being fired once. The callback will be invoked, with the latest state value, when no state updates has happened for the given delay.
+
+```
+const [query, setQuery] = useDebounceState((query) => {
+  // Called when state updates has paused for 2 seconds.
+}, 'useful react hooks', 2000);
+```
+
+> **Usecase:**\
+> A user types into a field which updates the state as normal but other actions like calling an API or calculating expensive things might be better to do when the user stops typing for a short period.
+
+**It takes three arguments**
+
+1. Debounce callback
+2. Initial state
+3. Delay (defaults to 1000 millisecons).
+
+Both the intial state and the delay are optional:
+
+```
+const [query, setQuery] = useDebounceState((query) => {
+  // Call API or do expensive operations...
+});
 ```
 
 ## Support

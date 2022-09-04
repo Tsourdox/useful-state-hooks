@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { useListState } from "../hooks/useListState";
+import { useListState } from "../hooks";
 
 interface User {
   id: string;

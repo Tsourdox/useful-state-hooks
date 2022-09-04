@@ -1,8 +1,8 @@
 {
   "name": "useful-state-hooks",
   "private": false,
-  "version": "1.0.4",
-  "description": "Useful state hooks - handling list states & syncing state with local storage.",
+  "version": "1.1.0",
+  "description": "Useful React hooks written in Typescript",
   "main": "src/hooks/index.ts",
   "types": "src/hooks/index.ts",
   "type": "module",
