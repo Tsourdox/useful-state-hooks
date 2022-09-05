@@ -129,7 +129,7 @@ const [query, setQuery] = useDebounceState((query) => {
 2. Initial state
 3. Delay (defaults to 1000 millisecons).
 
-Both the intial state and the delay are optional:
+Both the initial state and the delay are optional:
 
 ```
 const [query, setQuery] = useDebounceState((query) => {
