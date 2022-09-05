@@ -15,7 +15,10 @@ export function useLocalStorageState<S>(key: string, initialState: InitialState<
 export function useLocalStorageState<S = undefined>(key: string): ReturnTuple<S | undefined>;
 
 // Implementation
-export function useLocalStorageState<S>(key: string, initialState?: InitialState<S>): ReturnTuple<S | undefined> {
+export function useLocalStorageState<S>(
+  key: string,
+  initialState?: InitialState<S>
+): ReturnTuple<S | undefined> {
   const [state, setState] = useState(() => {
     const storedState = localStorage.getItem(key);
     if (storedState) {
@@ -40,7 +43,7 @@ export function useLocalStorageState<S>(key: string, initialState?: InitialState
       const stringState = typeof state === "string" ? state : JSON.stringify(state);
       localStorage.setItem(key, stringState);
     }
-  }, [state]);
+  }, [state, key]);
 
   return [state, setState];
 }

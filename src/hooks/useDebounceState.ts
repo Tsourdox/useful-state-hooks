@@ -61,7 +61,7 @@ export function useDebounceState<S>(
       timerId.current = setTimeout(() => onDebounce(nextState.current), delay);
       setState(setStateAction);
     },
-    [state, delay]
+    [state, delay, onDebounce]
   );
 
   const debounce = useRef({

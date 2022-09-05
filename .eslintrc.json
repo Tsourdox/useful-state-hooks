@@ -6,9 +6,17 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
-  "overrides": [],
+  "overrides": [
+    {
+      "files": ["*.test.ts"],
+      "rules": {
+        "@typescript-eslint/no-empty-function": "off"
+      }
+    }
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -25,7 +33,11 @@
         "varsIgnorePattern": "^_",
         "caughtErrorsIgnorePattern": "^_"
       }
-    ],
-    "@typescript-eslint/no-empty-function": "off"
+    ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

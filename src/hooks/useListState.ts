@@ -83,23 +83,20 @@ export function useListState<S>(
     [key]
   );
 
-  const sort = useCallback(
-    (direction: "asc" | "desc" = "asc", key?: keyof S | undefined) => {
-      set((prevState = []) => {
-        const copyState = [...prevState];
-        copyState.sort((a, b) => {
-          const aa = key ? a[key] : a;
-          const bb = key ? b[key] : b;
-          if (direction === "asc") {
-            return aa > bb ? 1 : -1;
-          }
-          return aa < bb ? 1 : -1;
-        });
-        return copyState;
+  const sort = useCallback((direction: "asc" | "desc" = "asc", key?: keyof S | undefined) => {
+    set((prevState = []) => {
+      const copyState = [...prevState];
+      copyState.sort((a, b) => {
+        const aa = key ? a[key] : a;
+        const bb = key ? b[key] : b;
+        if (direction === "asc") {
+          return aa > bb ? 1 : -1;
+        }
+        return aa < bb ? 1 : -1;
       });
-    },
-    [key]
-  );
+      return copyState;
+    });
+  }, []);
 
   return [state, { set, add, update, remove, sort }];
 }
