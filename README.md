@@ -10,11 +10,11 @@ npm install useful-state-hooks
 
 ## Hooks
 
-- [useLocalStorageState](#use-local-storage-state) - sync your state with local storage.
-- [useListState](#use-list-state) - work with lists without worrying about mutations.
-- [useDebounceState](#use-debounce-state) - delay execution of state related actions.
+- [useLocalStorageState](#uselocalstoragestate) - sync your state with local storage.
+- [useListState](#useliststate) - work with lists without worrying about mutations.
+- [useDebounceState](#usedebouncestate) - delay execution of state related actions.
 
-### <a name="use-local-storage-state"></a>UseLocalStorageState
+### UseLocalStorageState
 
 Syncs the state with localstorage. It has almost the same signature as the normal useState hook accepting primitives, dates, arrays and objects as initial state.
 
@@ -27,7 +27,7 @@ It takes two arguments. First argument is the localstorage key, while the second
 - Data stored in localstorage will be prioritized over initial state.
 - Date objects are revived (recreated from strings) when loaded from localstorage.
 
-### <a name="use-list-state"></a>UseListState
+### UseListState
 
 Was created to ease the headaches caused by mutations when working with arrays. Instead of returning a set function as the second tuple value, it returns an object with multiple set functions which can be used to update the state without mutating it.
 
@@ -110,7 +110,7 @@ setUsers.update({ id: 1, name: 'Olivia' });
 // [{ id: 1, name: 'Olivia' }]
 ```
 
-### <a name="use-debounce-state"></a>UseDebounceState
+### UseDebounceState
 
 This hook is useful when you want to update a state often but not trigger related actions at same rate. Multiple state updates in a row within the delay window will only result in the callback being fired once. The callback will be invoked, with the latest state value, when no state updates has happened for the given delay.
 
