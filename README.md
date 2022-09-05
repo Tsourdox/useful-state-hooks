@@ -137,6 +137,33 @@ const [query, setQuery] = useDebounceState((query) => {
 });
 ```
 
+It's even possible to destruct a third value from the tuple - a debounce object.
+
+The returned debounce object contains two functions, `flush` and `cancel`. Calling flush will call onDebounce immediately and calling cancel will prevent it from running - useful when your components are unmounting.
+
+```
+const [query, setQuery, debounce] = useDebounceState(
+  (query) => {
+    // Call API or do expensive operations...
+  }
+);
+
+// ----- do -----
+
+useEffect(() => {
+  // Make sure callback runs before component unmounts.
+  return debounce.flush
+}, [])
+
+// ----- or -----
+
+useEffect(() => {
+  // Prevent callback from running after component has unmounted.
+  return debounce.cancel
+}, [])
+
+```
+
 ## Support
 
 If you find and bugs please report an issue so it can be fixed. Do you have any suggestions that would improve the hooks please let me now. Feel free to contribute in any way!

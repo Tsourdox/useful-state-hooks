@@ -70,45 +70,39 @@ describe("updating state", () => {
   });
 });
 
-describe("callback runs", () => {
-  it("should call debounce callback with the latest state value", () =>
-    new Promise<void>((done) => {
-      const { result } = renderHook(() =>
-        useDebounceState((debouncedState) => {
-          expect(debouncedState).toBe("Test");
-          done();
-        }, "A")
-      );
-      const [_, setState] = result.current;
-      act(() => setState("Test"));
-      clock.advanceTimersByTime(1000);
-    }));
-  it("should call debounce callback with the latest state value when passing a function", () =>
-    new Promise<void>((done) => {
-      const { result } = renderHook(() =>
-        useDebounceState((debouncedState) => {
-          expect(debouncedState).toBe("AB");
-          done();
-        }, "A")
-      );
-      const [_, setState] = result.current;
-      act(() => setState((prev) => prev + "B"));
-      clock.advanceTimersByTime(1000);
-    }));
-  it("should call debounce callback once with the lastest value when updating state multiple times", () =>
-    new Promise<void>((done) => {
-      const { result } = renderHook(() =>
-        useDebounceState((debouncedState) => {
-          expect(debouncedState).toBe("D");
-          done();
-        }, "A")
-      );
-      const [_, setState] = result.current;
-      act(() => setState("B"));
-      act(() => setState("C"));
-      act(() => setState("D"));
-      clock.advanceTimersByTime(1000);
-    }));
+describe("debounce callback", () => {
+  it("should call debounce callback with the latest state value", () => {
+    const { result } = renderHook(() =>
+      useDebounceState((debouncedState) => {
+        expect(debouncedState).toBe("B");
+      }, "A")
+    );
+    const [_, setState] = result.current;
+    act(() => setState("B"));
+    clock.advanceTimersByTime(1000);
+  });
+  it("should call debounce callback with the latest state value when passing a function", () => {
+    const { result } = renderHook(() =>
+      useDebounceState((debouncedState) => {
+        expect(debouncedState).toBe("AB");
+      }, "A")
+    );
+    const [_, setState] = result.current;
+    act(() => setState((prev) => prev + "B"));
+    clock.advanceTimersByTime(1000);
+  });
+  it("should call debounce callback once with the lastest value when updating state multiple times", () => {
+    const { result } = renderHook(() =>
+      useDebounceState((debouncedState) => {
+        expect(debouncedState).toBe("D");
+      }, "A")
+    );
+    const [_, setState] = result.current;
+    act(() => setState("B"));
+    act(() => setState("C"));
+    act(() => setState("D"));
+    clock.advanceTimersByTime(1000);
+  });
   it("should call debounce callback after delayed time (15 seconds)", () =>
     new Promise<void>((done) => {
       const { result } = renderHook(() => useDebounceState(() => done(), "A", 15000));
@@ -116,4 +110,40 @@ describe("callback runs", () => {
       act(() => setState("B"));
       clock.advanceTimersByTime(15000);
     }));
+  it("should call debounce callback immediately with the latest state when the flush function is called", () => {
+    const mockObject = {
+      callback: (state: string) => {
+        expect(state).toBe("C");
+      },
+    };
+    const spy = vi.spyOn(mockObject, "callback");
+
+    const { result } = renderHook(() => useDebounceState<string>(mockObject.callback, "A"));
+    const [_, setState, debounce] = result.current;
+    act(() => setState("B"));
+    act(() => setState("C"));
+    debounce.flush();
+
+    clock.advanceTimersByTime(1000);
+    const [state] = result.current;
+    expect(state).toBe("C");
+    expect(spy).toHaveBeenCalledOnce();
+  });
+  it("should not call debounce callback when the cancel function is called", () => {
+    const mockObject = {
+      callback: () => {},
+    };
+    const spy = vi.spyOn(mockObject, "callback");
+
+    const { result } = renderHook(() => useDebounceState(mockObject.callback, "A"));
+    const [_, setState, debounce] = result.current;
+    act(() => setState("B"));
+    act(() => setState("C"));
+    debounce.cancel();
+
+    clock.advanceTimersByTime(1000);
+    const [state] = result.current;
+    expect(state).toBe("C");
+    expect(spy).toHaveBeenCalledTimes(0);
+  });
 });
