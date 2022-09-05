@@ -53,7 +53,9 @@
   "homepage": "https://github.com/Tsourdox/useful-state-hooks",
   "scripts": {
     "test": "vitest --reporter verbose",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "check:types": "tsc --noEmit",
+    "check:lint": "eslint src/**"
   },
   "peerDependencies": {
     "react": "^16.9.0 || ^17.0.0 || ^18.0.0"
@@ -61,8 +63,13 @@
   "devDependencies": {
     "@testing-library/react": "^13.3.0",
     "@types/react": "^18.0.17",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
     "@vitejs/plugin-react": "^2.0.1",
     "@vitest/coverage-c8": "^0.22.1",
+    "eslint": "^8.23.0",
+    "eslint-plugin-react": "^7.31.7",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "happy-dom": "^6.0.4",
     "react": "^18.2.0",
     "typescript": "^4.6.4",
