@@ -19,10 +19,10 @@
   "scripts": {
     "test": "vitest --reporter verbose",
     "coverage": "vitest run --coverage",
-    "check:types": "tsc --noEmit",
-    "check:lint": "eslint ./src",
-    "check:format": "prettier ./ --check",
-    "check": "npm run check:types && npm run check:lint && npm run check:format"
+    "types": "tsc --noEmit",
+    "lint": "eslint ./src",
+    "format": "prettier ./ --check",
+    "check": "npm run types && npm run lint && npm run format"
   },
   "peerDependencies": {
     "react": "^16.9.0 || ^17.0.0 || ^18.0.0"
