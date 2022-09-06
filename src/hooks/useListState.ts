@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 
 // Convenience types
 type Primitive = string | number | boolean | bigint | symbol;
@@ -24,8 +24,8 @@ type SelectSetFunctions<S> = S extends object ? ObjectSetFunctions<S> : Primitiv
 /**
  * An extended version of the setState hook for lists that export additional some set functions.
  * These functions can be used to update the state without mutating it.
- * @param initialState can be used to set a default state.
- * @param key when objects are stored in the list state a key is needed to compare them.
+ * @param initialState used to set a default state to start with.
+ * @param key used to compare object equality, can't be changed.
  *
  * DEV_NOTE: Passing a primitive list as initialState without adding a generics argument causes it to
  * be infered as a union type, for example (1 | 2)[] instead of number[] - how can this be fixed?
@@ -48,23 +48,20 @@ export function useListState<S>(
   initialState?: InitialState<S[]>,
   key?: keyof S | undefined
 ): [S[] | undefined, ObjectSetFunctions<S> | PrimitiveSetFunctions<S>] {
-  const [state, set] = useState(initialState);
+  const [state, setState] = useState(initialState);
 
-  const add = useCallback(
-    (...items: S[]) => {
-      set((prevState = []) => {
+  const setStateObject = useRef({
+    set: setState,
+    add: (...items: S[]) => {
+      setState((prevState = []) => {
         const removedDuplicates = items.filter(
           (item) => !prevState?.some((stateItem) => isEqual(stateItem, item, key))
         );
         return [...prevState, ...removedDuplicates];
       });
     },
-    [key]
-  );
-
-  const update = useCallback(
-    (item: S) => {
-      set((prevState = []) => {
+    update: (item: S) => {
+      setState((prevState = []) => {
         const copyState = [...prevState];
         const index = copyState.findIndex((i) => isEqual(i, item, key));
         if (index !== -1) {
@@ -73,32 +70,26 @@ export function useListState<S>(
         return copyState;
       });
     },
-    [key]
-  );
-
-  const remove = useCallback(
-    (item: S) => {
-      set((prevState) => prevState?.filter((i) => !isEqual(i, item, key)));
+    remove: (item: S) => {
+      setState((prevState) => prevState?.filter((i) => !isEqual(i, item, key)));
     },
-    [key]
-  );
-
-  const sort = useCallback((direction: 'asc' | 'desc' = 'asc', key?: keyof S | undefined) => {
-    set((prevState = []) => {
-      const copyState = [...prevState];
-      copyState.sort((a, b) => {
-        const aa = key ? a[key] : a;
-        const bb = key ? b[key] : b;
-        if (direction === 'asc') {
-          return aa > bb ? 1 : -1;
-        }
-        return aa < bb ? 1 : -1;
+    sort: (direction: 'asc' | 'desc' = 'asc', key?: keyof S | undefined) => {
+      setState((prevState = []) => {
+        const copyState = [...prevState];
+        copyState.sort((a, b) => {
+          const aa = key ? a[key] : a;
+          const bb = key ? b[key] : b;
+          if (direction === 'asc') {
+            return aa > bb ? 1 : -1;
+          }
+          return aa < bb ? 1 : -1;
+        });
+        return copyState;
       });
-      return copyState;
-    });
-  }, []);
+    },
+  });
 
-  return [state, { set, add, update, remove, sort }];
+  return [state, setStateObject.current];
 }
 
 /** Determines if two list items are the same */

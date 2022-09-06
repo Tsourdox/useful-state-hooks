@@ -294,3 +294,18 @@ describe('updating date states', () => {
     expect(dates).toStrictEqual(expectedState);
   });
 });
+
+describe('returned tuple', () => {
+  it('should always return the same set object between renders', () => {
+    const { result, rerender } = renderHook(() => useListState<number>([1, 2, 3]));
+
+    const [_, setDates1] = result.current;
+    rerender();
+    const [__, setDates2] = result.current;
+    act(() => setDates2.set([1, 2, 3]));
+    const [___, setDates3] = result.current;
+
+    expect(setDates1).toEqual(setDates2);
+    expect(setDates2).toEqual(setDates3);
+  });
+});
