@@ -87,6 +87,7 @@ describe('reviving date objects', () => {
     expect(state).toEqual({ date });
   });
 });
+
 describe('updating state', () => {
   it('should be able to update the state and have the value be saved to local storage', () => {
     const setSpy = vi.spyOn(localStorage, 'setItem');
@@ -122,5 +123,30 @@ describe('updating state', () => {
     expect(removeSpy).toHaveBeenCalledTimes(0);
     expect(setSpy).toHaveBeenLastCalledWith('number', JSON.stringify(null));
     expect(message).toBe(null);
+  });
+});
+
+describe('returned tuple', () => {
+  it('should always return the same set state function between renders', () => {
+    const { result } = renderHook(() => useLocalStorageState('data', [1, 2, 3]));
+
+    const [_, setData1] = result.current;
+    act(() => setData1([1, 2, 3]));
+    const [__, setData2] = result.current;
+
+    expect(setData1).toEqual(setData2);
+  });
+
+  it('should save to new place in local storage when the key changes', () => {
+    const setSpy = vi.spyOn(localStorage, 'setItem');
+
+    const { rerender } = renderHook(({ key }) => useLocalStorageState(key, [1, 2, 3]), {
+      initialProps: { key: 'origin' },
+    });
+    rerender({ key: 'new_place' });
+
+    expect(setSpy).toHaveBeenCalledTimes(2);
+    expect(setSpy).toHaveBeenCalledWith('origin', JSON.stringify([1, 2, 3]));
+    expect(setSpy).toHaveBeenCalledWith('new_place', JSON.stringify([1, 2, 3]));
   });
 });
