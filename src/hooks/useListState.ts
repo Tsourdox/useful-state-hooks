@@ -28,7 +28,7 @@ type SelectSetFunctions<S> = S extends object ? ObjectSetFunctions<S> : Primitiv
  * @param key used to compare object equality, can't be changed.
  *
  * DEV_NOTE: Passing a primitive list as initialState without adding a generics argument causes it to
- * be infered as a union type, for example (1 | 2)[] instead of number[] - how can this be fixed?
+ * be inferred as a union type, for example (1 | 2)[] instead of number[] - how can this be fixed?
  */
 // Overload signatures
 export function useListState<S extends object>(

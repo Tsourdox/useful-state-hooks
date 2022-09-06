@@ -33,7 +33,7 @@ describe('initial state', () => {
 });
 
 describe('syncing with local storage', () => {
-  it('should not save data to local storage when no arguement or undefined is passed in as initial state', () => {
+  it('should not save data to local storage when no argument or undefined is passed in as initial state', () => {
     const setSpy = vi.spyOn(localStorage, 'setItem');
     renderHook(() => useLocalStorageState('no args'));
     renderHook(() => useLocalStorageState('undefined', undefined));

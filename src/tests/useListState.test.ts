@@ -8,7 +8,7 @@ interface User {
 }
 
 describe('initial state', () => {
-  it('should set state to undeinfed when used without an initial state', () => {
+  it('should set state to undefined when used without an initial state', () => {
     const { result } = renderHook(() => useListState<string>());
     const [state] = result.current;
     expect(state).toBeUndefined();
