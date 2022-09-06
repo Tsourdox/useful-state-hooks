@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 // Convenience type
 type InitialState<S> = S | (() => S);
@@ -24,13 +24,13 @@ export function useLocalStorageState<S>(
     if (storedState) {
       const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
       return JSON.parse(storedState, (_, value) => {
-        if (typeof value === "string" && dateFormat.test(value)) {
+        if (typeof value === 'string' && dateFormat.test(value)) {
           return new Date(value);
         }
         return value;
       }) as S;
     }
-    if (typeof initialState === "function") {
+    if (typeof initialState === 'function') {
       return (initialState as () => S)();
     }
     return initialState;
@@ -40,7 +40,7 @@ export function useLocalStorageState<S>(
     if (state === undefined) {
       localStorage.removeItem(key);
     } else {
-      const stringState = typeof state === "string" ? state : JSON.stringify(state);
+      const stringState = typeof state === 'string' ? state : JSON.stringify(state);
       localStorage.setItem(key, stringState);
     }
   }, [state, key]);

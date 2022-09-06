@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
 // Convenience types
 type Primitive = string | number | boolean | bigint | symbol;
@@ -10,14 +10,14 @@ type PrimitiveSetFunctions<S> = {
   set: Dispatch<SetStateAction<S[] | undefined>>;
   add: (...items: S[]) => void;
   remove: (item: S) => void;
-  sort: (direction?: "asc" | "desc") => void;
+  sort: (direction?: 'asc' | 'desc') => void;
 };
 type ObjectSetFunctions<S> = {
   set: Dispatch<SetStateAction<S[] | undefined>>;
   add: (...items: S[]) => void;
   update: (item: S) => void;
   remove: (item: S) => void;
-  sort: (direction: "asc" | "desc", by: keyof S) => void;
+  sort: (direction: 'asc' | 'desc', by: keyof S) => void;
 };
 type SelectSetFunctions<S> = S extends object ? ObjectSetFunctions<S> : PrimitiveSetFunctions<S>;
 
@@ -83,13 +83,13 @@ export function useListState<S>(
     [key]
   );
 
-  const sort = useCallback((direction: "asc" | "desc" = "asc", key?: keyof S | undefined) => {
+  const sort = useCallback((direction: 'asc' | 'desc' = 'asc', key?: keyof S | undefined) => {
     set((prevState = []) => {
       const copyState = [...prevState];
       copyState.sort((a, b) => {
         const aa = key ? a[key] : a;
         const bb = key ? b[key] : b;
-        if (direction === "asc") {
+        if (direction === 'asc') {
           return aa > bb ? 1 : -1;
         }
         return aa < bb ? 1 : -1;

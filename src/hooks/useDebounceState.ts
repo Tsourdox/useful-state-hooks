@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react';
 
 // Convenience types
 type InitialState<S> = S | (() => S);
@@ -54,7 +54,7 @@ export function useDebounceState<S>(
       if (timerId.current) clearTimeout(timerId.current);
 
       nextState.current =
-        typeof setStateAction === "function"
+        typeof setStateAction === 'function'
           ? (setStateAction as SetStateCallback<S | undefined>)(state)
           : setStateAction;
 
