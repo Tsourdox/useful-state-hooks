@@ -55,6 +55,17 @@ describe('syncing with local storage', () => {
     const [state2] = obj2.result.current;
     expect(state2).toStrictEqual([1, 2, 3]);
   });
+  it('should save to new place in local storage when the key changes', () => {
+    const setSpy = vi.spyOn(localStorage, 'setItem');
+    const { rerender } = renderHook(({ key }) => useLocalStorageState(key, [1, 2, 3]), {
+      initialProps: { key: 'origin' },
+    });
+    rerender({ key: 'new_place' });
+
+    expect(setSpy).toHaveBeenCalledTimes(2);
+    expect(setSpy).toHaveBeenCalledWith('origin', JSON.stringify([1, 2, 3]));
+    expect(setSpy).toHaveBeenCalledWith('new_place', JSON.stringify([1, 2, 3]));
+  });
 });
 
 describe('reviving date objects', () => {
@@ -129,24 +140,9 @@ describe('updating state', () => {
 describe('returned tuple', () => {
   it('should always return the same set state function between renders', () => {
     const { result } = renderHook(() => useLocalStorageState('data', [1, 2, 3]));
-
     const [_, setData1] = result.current;
     act(() => setData1([1, 2, 3]));
     const [__, setData2] = result.current;
-
     expect(setData1).toEqual(setData2);
-  });
-
-  it('should save to new place in local storage when the key changes', () => {
-    const setSpy = vi.spyOn(localStorage, 'setItem');
-
-    const { rerender } = renderHook(({ key }) => useLocalStorageState(key, [1, 2, 3]), {
-      initialProps: { key: 'origin' },
-    });
-    rerender({ key: 'new_place' });
-
-    expect(setSpy).toHaveBeenCalledTimes(2);
-    expect(setSpy).toHaveBeenCalledWith('origin', JSON.stringify([1, 2, 3]));
-    expect(setSpy).toHaveBeenCalledWith('new_place', JSON.stringify([1, 2, 3]));
   });
 });
