@@ -1,7 +1,7 @@
 {
   "name": "useful-state-hooks",
   "author": "David Jensen <tsourdox@icloud.com>",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Useful React hooks written in Typescript",
   "private": false,
   "main": "src/hooks/index.ts",
