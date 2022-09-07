@@ -1,9 +1,8 @@
-import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
 // Convenience types
 type InitialState<S> = S | (() => S);
 type DebounceCallback<S> = (state: S) => void;
-type SetStateCallback<S> = (state: S) => S;
 type ReturnTuple<S> = [S, Dispatch<SetStateAction<S>>, DebounceActions];
 type DebounceActions = { flush: () => void; cancel: () => void };
 
@@ -13,10 +12,9 @@ type DebounceActions = { flush: () => void; cancel: () => void };
  * result in the callback being fired once. The callback will be invoked, with the
  * latest state value, when no state updates has happened for the given delay.
  *
- * Example:
- * A user types into a field which updates the state as normal but other
- * actions like calling an API or calculating expensive things might be
- * better to do when the user stops typing for a short period.
+ * The onDebounce parameter is similar to initialState, where changes to it between renders
+ * won't have an effect. The initial function passed in is stored as a stable/static
+ * value using the useRef hook.
  *
  * The returned debounce object contains two functions, flush and cancel.
  * Calling flush will call onDebounce immediately instead and calling cancel
@@ -46,31 +44,34 @@ export function useDebounceState<S>(
   delay = 1000
 ): ReturnTuple<S | undefined> {
   const [state, setState] = useState(initialState);
+
   const timerId = useRef<NodeJS.Timeout>();
-  const nextState = useRef<S | undefined>();
+  const latestState = useRef<S | undefined>();
+  const initialParams = useRef({ onDebounce });
 
   const setStateWithDebounce = useCallback(
     (setStateAction: SetStateAction<S | undefined>) => {
       if (timerId.current) clearTimeout(timerId.current);
-
-      nextState.current =
-        typeof setStateAction === 'function'
-          ? (setStateAction as SetStateCallback<S | undefined>)(state)
-          : setStateAction;
-
-      timerId.current = setTimeout(() => onDebounce(nextState.current), delay);
+      timerId.current = setTimeout(
+        () => initialParams.current.onDebounce(latestState.current),
+        delay
+      );
       setState(setStateAction);
     },
-    [state, delay, onDebounce]
+    [delay]
   );
 
   const debounce = useRef({
     cancel: () => clearTimeout(timerId.current),
     flush: () => {
-      debounce.current.cancel();
-      onDebounce(nextState.current);
+      clearTimeout(timerId.current);
+      initialParams.current.onDebounce(latestState.current);
     },
   });
+
+  useEffect(() => {
+    latestState.current = state;
+  }, [state]);
 
   return [state, setStateWithDebounce, debounce.current];
 }

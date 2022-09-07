@@ -4,5 +4,6 @@
   "editor.codeActionsOnSave": ["source.addMissingImports", "source.organizeImports"],
   "javascript.preferences.useAliasesForRenames": false,
   "typescript.preferences.useAliasesForRenames": false,
-  "cSpell.words": ["localstorage"]
+  "cSpell.words": ["localstorage"],
+  "cSpell.enabled": true
 }

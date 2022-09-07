@@ -91,7 +91,7 @@ describe('debounce callback', () => {
     act(() => setState((prev) => prev + 'B'));
     clock.advanceTimersByTime(1000);
   });
-  it('should call debounce callback once with the lastest value when updating state multiple times', () => {
+  it('should call debounce callback once with the latest value when updating state multiple times', () => {
     const { result } = renderHook(() =>
       useDebounceState((debouncedState) => {
         expect(debouncedState).toBe('D');
@@ -145,5 +145,44 @@ describe('debounce callback', () => {
     const [state] = result.current;
     expect(state).toBe('C');
     expect(spy).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe('returned tuple', () => {
+  it('should return the same set state function between renders', () => {
+    const { result, rerender } = renderHook(() => useDebounceState<string>(() => {}));
+
+    const [, setState1] = result.current;
+    rerender();
+    const [, setState2] = result.current;
+    act(() => setState2('changed'));
+    const [, setState3] = result.current;
+
+    expect(setState1).toEqual(setState2);
+    expect(setState2).toEqual(setState3);
+  });
+  it('should return a new set state function when delay prop changes', () => {
+    const { result, rerender } = renderHook(
+      ({ delay }) => useDebounceState<string>(() => {}, '', delay),
+      { initialProps: { delay: 1000 } }
+    );
+
+    const [, setState1] = result.current;
+    rerender({ delay: 2000 });
+    const [, setState2] = result.current;
+
+    expect(setState1).not.toEqual(setState2);
+  });
+  it('should return the same debounce object between renders', () => {
+    const { result, rerender } = renderHook(() => useDebounceState<string>(() => {}));
+
+    const [, , debounce1] = result.current;
+    rerender();
+    const [, setState, debounce2] = result.current;
+    act(() => setState('changed'));
+    const [, , debounce3] = result.current;
+
+    expect(debounce1).toEqual(debounce2);
+    expect(debounce2).toEqual(debounce3);
   });
 });
