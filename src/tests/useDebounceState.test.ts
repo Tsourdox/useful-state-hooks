@@ -1,4 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
+import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { useDebounceState } from '../hooks';
 
@@ -145,6 +146,20 @@ describe('debounce callback', () => {
     const [state] = result.current;
     expect(state).toBe('C');
     expect(spy).toHaveBeenCalledTimes(0);
+  });
+  it('should be able to reference and use another state value from the debounce callback', () => {
+    const { result } = renderHook(() => {
+      const [count, setCount] = useState(0);
+      useDebounceState<string>(() => {
+        expect(count).toBe(10);
+      });
+      return [count, setCount] as const;
+    });
+    const [, setCount] = result.current;
+    act(() => setCount((prev) => prev + 10));
+    const [count] = result.current;
+    expect(count).toEqual(10);
+    clock.advanceTimersByTime(1000);
   });
 });
 
