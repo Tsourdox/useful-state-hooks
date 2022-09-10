@@ -5,5 +5,6 @@
   "javascript.preferences.useAliasesForRenames": false,
   "typescript.preferences.useAliasesForRenames": false,
   "cSpell.words": ["localstorage"],
-  "cSpell.enabled": true
+  "cSpell.enabled": true,
+  "task.allowAutomaticTasks": "on"
 }

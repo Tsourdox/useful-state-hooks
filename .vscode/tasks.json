@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start tests",
+      "type": "shell",
+      "command": "cd ./server && [ ! -d 'node_modules' ] && (npm i && npm test) || npm test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "test"
+      },
+      "runOptions": { "runOn": "folderOpen" }
+    }
+  ]
+}
