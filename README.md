@@ -1,5 +1,11 @@
 # Useful state hooks
 
+![Maintained](https://img.shields.io/badge/maintained-yes-blue)
+![Size](https://img.shields.io/badge/size-2kB-blue)
+![Coverage](https://img.shields.io/badge/coverage-100%25-green)
+![License](https://img.shields.io/npm/l/useful-state-hooks)
+![Issues](https://img.shields.io/github/issues/tsourdox/useful-state-hooks)
+
 Useful React hooks written in Typescript. They handle the same type of states as the normal useState hook but with a few every day coding improvements. Each hooks is written to be as similar to the original useState hook as possible with the purpose of being ease to use.
 
 ## Installation
