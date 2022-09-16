@@ -175,4 +175,4 @@ useEffect(() => {
 
 If you find and bugs please report an issue so it can be fixed. Do you have any suggestions that would improve the hooks please let me now. Feel free to contribute in any way!
 
-**I hope this can be useful for you in some way, enjoy =)**
+**I hope this can be useful for you in some way, enjoy 😇**
