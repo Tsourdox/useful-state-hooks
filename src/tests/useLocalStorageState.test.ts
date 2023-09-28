@@ -68,7 +68,46 @@ describe('syncing with local storage', () => {
   });
 });
 
-describe('reviving date objects', () => {
+describe('reviving state', () => {
+  it('should be able to save and load booleans to and from local storage', () => {
+    const setSpy = vi.spyOn(localStorage, 'setItem');
+    renderHook(() => useLocalStorageState('boolean', true));
+    expect(setSpy).toHaveBeenCalledOnce();
+    expect(setSpy).toHaveBeenCalledWith('boolean', JSON.stringify(true));
+
+    const getSpy = vi.spyOn(localStorage, 'getItem');
+    const { result } = renderHook(() => useLocalStorageState<boolean>('boolean'));
+    const [state] = result.current;
+    expect(getSpy).toHaveBeenCalledOnce();
+    expect(state).toBeTypeOf('boolean');
+    expect(state).toBe(true);
+  });
+  it('should be able to save and load numbers to and from local storage', () => {
+    const setSpy = vi.spyOn(localStorage, 'setItem');
+    renderHook(() => useLocalStorageState('number', 222));
+    expect(setSpy).toHaveBeenCalledOnce();
+    expect(setSpy).toHaveBeenCalledWith('number', JSON.stringify(222));
+
+    const getSpy = vi.spyOn(localStorage, 'getItem');
+    const { result } = renderHook(() => useLocalStorageState<number>('number'));
+    const [state] = result.current;
+    expect(getSpy).toHaveBeenCalledOnce();
+    expect(state).toBeTypeOf('number');
+    expect(state).toBe(222);
+  });
+  it('should be able to save and load strings to and from local storage', () => {
+    const setSpy = vi.spyOn(localStorage, 'setItem');
+    renderHook(() => useLocalStorageState('message', 'Hello world'));
+    expect(setSpy).toHaveBeenCalledOnce();
+    expect(setSpy).toHaveBeenCalledWith('message', 'Hello world');
+
+    const getSpy = vi.spyOn(localStorage, 'getItem');
+    const { result } = renderHook(() => useLocalStorageState<string>('message'));
+    const [state] = result.current;
+    expect(getSpy).toHaveBeenCalledOnce();
+    expect(state).toBeTypeOf('string');
+    expect(state).toBe('Hello world');
+  });
   it('should be able to save and load date objects to and from local storage', () => {
     const setSpy = vi.spyOn(localStorage, 'setItem');
     const date = new Date();

@@ -20,16 +20,21 @@ export function useLocalStorageState<S>(
   initialState?: InitialState<S>
 ): ReturnTuple<S | undefined> {
   const [state, setState] = useState(() => {
-    const storedState = localStorage.getItem(key);
-    if (storedState) {
-      const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
-      return JSON.parse(storedState, (_, value) => {
-        if (typeof value === 'string' && dateFormat.test(value)) {
-          return new Date(value);
-        }
-        return value;
-      }) as S;
+    if (typeof localStorage !== 'undefined') {
+      const storedState = localStorage.getItem(key);
+      if (storedState) {
+        if (isPlainString(storedState)) return storedState as S;
+
+        const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+        return JSON.parse(storedState, (_, value) => {
+          if (typeof value === 'string' && dateFormat.test(value)) {
+            return new Date(value);
+          }
+          return value;
+        }) as S;
+      }
     }
+
     if (typeof initialState === 'function') {
       return (initialState as () => S)();
     }
@@ -46,4 +51,13 @@ export function useLocalStorageState<S>(
   }, [state, key]);
 
   return [state, setState];
+}
+
+function isPlainString(jsonString: string) {
+  try {
+    JSON.parse(jsonString);
+    return false;
+  } catch (error) {
+    return true;
+  }
 }
